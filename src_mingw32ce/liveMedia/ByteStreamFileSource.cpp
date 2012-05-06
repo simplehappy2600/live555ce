@@ -141,7 +141,11 @@ void ByteStreamFileSource::doReadFromFile() {
     fFrameSize = fread(fTo, 1, fMaxSize, fFid);
   } else {
     // For non-seekable files (e.g., pipes), call "read()" rather than "fread()", to ensure that the read doesn't block:
+#ifdef DR400
+    fFrameSize = fread(fTo, fMaxSize, 1, fFid);	
+#else
     fFrameSize = read(fileno(fFid), fTo, fMaxSize);
+#endif
   }
   if (fFrameSize == 0) {
     handleClosure(this);

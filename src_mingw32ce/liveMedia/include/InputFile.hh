@@ -42,6 +42,11 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 #include <sys/stat.h>
 #endif
 
+#if (defined(_WIN32_WCE) && defined(DR400))
+#include <io.h>
+#define READ_FROM_FILES_SYNCHRONOUSLY 1
+#endif
+
 FILE* OpenInputFile(UsageEnvironment& env, char const* fileName);
 
 void CloseInputFile(FILE* fid);

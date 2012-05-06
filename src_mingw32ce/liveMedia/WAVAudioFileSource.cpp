@@ -272,7 +272,11 @@ void WAVAudioFileSource::doReadFromFile() {
       numBytesRead = fread(fTo, 1, bytesToRead, fFid);
    } else {
       // For non-seekable files (e.g., pipes), call "read()" rather than "fread()", to ensure that the read doesn't block:
+#ifdef DR400
+      numBytesRead = fread(fTo, bytesToRead, 1, fFid);
+#else
       numBytesRead = read(fileno(fFid), fTo, bytesToRead);
+#endif
     }
     if (numBytesRead == 0) {
      handleClosure(this);
